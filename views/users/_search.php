@@ -4,40 +4,34 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\PersonSearch */
+/* @var $model app\models\UsersSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="person-search">
+<div class="users-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'PersonID') ?>
+    <?= $form->field($model, 'UserID') ?>
 
     <?= $form->field($model, 'FirstName') ?>
 
     <?= $form->field($model, 'LastName') ?>
 
-    <?= $form->field($model, 'Type') ?>
+    <?= $form->field($model, 'Email') ?>
 
-    <?= $form->field($model, 'ContactNum') ?>
-
-    <?php // echo $form->field($model, 'Address') ?>
-
-    <?php // echo $form->field($model, 'UserName') ?>
+    <?= $form->field($model, 'UserName') ?>
 
     <?php // echo $form->field($model, 'Password') ?>
 
     <?php // echo $form->field($model, 'PasswordHash') ?>
 
-    <?php // echo $form->field($model, 'Email') ?>
+    <?php // echo $form->field($model, 'PhoneNum') ?>
 
     <?php // echo $form->field($model, 'PrivilegeID') ?>
-
-    <?php // echo $form->field($model, 'IsSubscribed') ?>
 
     <?php // echo $form->field($model, 'IsActive') ?>
 

@@ -14,7 +14,7 @@ $config = [
             'cookieValidationKey' => '3iqENwA7yQYHpa-ubNPmEYkxWzpOErOn',
         ],
         'user' => [
-            'identityClass' => 'app\models\Person',
+            'identityClass' => 'app\models\Users',
             'loginUrl' => ['site/login'],
             'enableAutoLogin' => false,
         ],

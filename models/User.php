@@ -1,7 +1,9 @@
 <?php
 
 namespace app\models;
-use app\models\Person;
+
+use Yii;
+use app\models\Users;
 
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
@@ -17,7 +19,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        $data = Person::find()->where(['PersonID' => $id])->one();
+        $data = Users::find()->where(['UserID' => $id])->one();
         if(isset($data))
         {
             return $data;
@@ -50,7 +52,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        $data = Person::find()->where(['UserName' => $username])->one();
+        $data = Users::find()->where(['UserName' => $username])->one();
         if(isset($data))
         {
             return $data;
@@ -63,7 +65,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 
     public static function findByEmail($email)
     {
-        $data = Person::find()->where(['Email' => $email])->one();
+        $data = Users::find()->where(['Email' => $email])->one();
         if(isset($data))
         {
             return $data;

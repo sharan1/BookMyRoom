@@ -4,31 +4,15 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "Person".
- *
- * @property integer $PersonID
- * @property string $FirstName
- * @property string $LastName
- * @property string $Type
- * @property string $ContactNum
- * @property string $Address
- * @property string $UserName
- * @property string $Password
- * @property string $PasswordHash
- * @property string $Email
- * @property integer $PrivilegeID
- * @property integer $IsSubscribed
- * @property integer $IsActive
- */
-class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+
+class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'Person';
+        return 'Users';
     }
 
     /**
@@ -37,12 +21,11 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['FirstName', 'LastName', 'UserName', 'Password', 'Email', 'PrivilegeID'], 'required'],
-            [['Address'], 'string'],
-            [['PrivilegeID'], 'integer'],
-            [['FirstName', 'LastName', 'UserName', 'Email'], 'string', 'max' => 30],
-            [['Type', 'ContactNum'], 'string', 'max' => 20],
-            [['Password', 'PasswordHash'], 'string', 'max' => 55],
+            [['PrivilegeID', 'IsActive'], 'integer'],
+            [['FirstName', 'LastName'], 'string', 'max' => 55],
+            [['Email', 'UserName'], 'string', 'max' => 50],
+            [['Password', 'PasswordHash'], 'string', 'max' => 75],
+            [['PhoneNum'], 'string', 'max' => 15],
         ];
     }
 
@@ -52,18 +35,15 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function attributeLabels()
     {
         return [
-            'PersonID' => 'Person ID',
+            'UserID' => 'User ID',
             'FirstName' => 'First Name',
             'LastName' => 'Last Name',
-            'Type' => 'Type',
-            'ContactNum' => 'Contact Num',
-            'Address' => 'Address',
+            'Email' => 'Email',
             'UserName' => 'User Name',
             'Password' => 'Password',
             'PasswordHash' => 'Password Hash',
-            'Email' => 'Email',
+            'PhoneNum' => 'Phone Num',
             'PrivilegeID' => 'Privilege ID',
-            'IsSubscribed' => 'Is Subscribed',
             'IsActive' => 'Is Active',
         ];
     }
@@ -78,7 +58,7 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findByUsername($username)
     {
-        $data = Person::find()->where(['UserName' => $username])->one();
+        $data = Users::find()->where(['UserName' => $username])->one();
         if(isset($data))
         {
             return $data;
@@ -91,7 +71,7 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findByEmail($email)
     {
-        $data = Person::find()->where(['Email' => $email])->one();
+        $data = Users::find()->where(['Email' => $email])->one();
         if(isset($data))
         {
             return $data;
@@ -104,7 +84,7 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findIdentity($id)
     {
-        $data = Person::find()->where(['PersonID' => $id])->one();
+        $data = Users::find()->where(['UserID' => $id])->one();
         if(isset($data))
         {
             return $data;
@@ -117,7 +97,7 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getId()
     {
-        return $this->PersonID;
+        return $this->UserID;
     }
 
     /**
@@ -158,3 +138,5 @@ class Person extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return null;
     }
 }
+
+?>

@@ -4,12 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
+use app\components\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
-use app\models\Person;
+use app\models\Users;
 use app\components\AdminLogin; 
 
 class SiteController extends Controller
@@ -76,10 +76,10 @@ class SiteController extends Controller
         $model = new AdminLogin();
         if (!Yii::$app->user->isGuest) 
         {
-            $userDetails = Person::findIdentity(Yii::$app->user->id);
-            if (isset($userDetails)) 
+            $userDetails = Users::findIdentity(Yii::$app->user->id);
+            if (isset($userDetails))
             {
-                $this->redirect(['/person'])->send();
+                $this->redirect(['/users'])->send();
             } 
             else 
             {
@@ -93,10 +93,10 @@ class SiteController extends Controller
             $model = new AdminLogin();
             if ($model->load(Yii::$app->request->post()) && $model->login()) 
             {
-                $userDetails = Person::findIdentity(Yii::$app->user->id);
+                $userDetails = Users::findIdentity(Yii::$app->user->id);
                 if (isset($userDetails)) 
                 {
-                    $this->redirect(['/person'])->send();
+                    $this->redirect(['/users'])->send();
                 } 
                 else 
                 {

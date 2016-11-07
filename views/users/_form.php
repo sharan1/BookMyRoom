@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Person */
+/* @var $model app\models\Users */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="person-form">
+<div class="users-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -16,11 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'LastName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Type')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ContactNum')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'UserName')->textInput(['maxlength' => true]) ?>
 
@@ -28,11 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'PasswordHash')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'PhoneNum')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'PrivilegeID')->textInput() ?>
-
-    <?= $form->field($model, 'IsSubscribed')->textInput() ?>
 
     <?= $form->field($model, 'IsActive')->textInput() ?>
 
