@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Clothing Closet';
+$this->title = 'Room Reservation System';
 ?>
 <div class="site-index">
 
