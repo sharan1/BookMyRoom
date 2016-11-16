@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Users;
 
 /**
  * This is the model class for table "BookingRequest".
@@ -47,7 +48,7 @@ class BookingRequest extends \yii\db\ActiveRecord
     {
         return [
             'RequestID' => 'Request ID',
-            'UserID' => 'User ID',
+            'UserID' => 'Requestor',
             'RequestedOn' => 'Requested On',
             'StartTime' => 'Start Time',
             'EndTime' => 'End Time',
@@ -57,4 +58,10 @@ class BookingRequest extends \yii\db\ActiveRecord
             'Last_Updated' => 'Last  Updated',
         ];
     }
+
+    public function getUser()
+    {
+        return Users::find()->where(['UserID' => $this->UserID])->one();
+    }
+    
 }

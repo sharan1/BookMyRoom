@@ -41,7 +41,7 @@ class UsersSearch extends Users
      */
     public function search($params)
     {
-        $query = Users::find();
+        $query = Users::find()->where(['IsActive' => 1]);
 
         // add conditions that should always apply here
 

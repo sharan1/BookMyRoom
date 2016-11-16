@@ -2,7 +2,7 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -21,13 +21,13 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="hold-transition skin-red sidebar-mini">
 <?php $this->beginBody() ?>
 
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Room Reservation System',
+        'brandLabel' => 'Book My Room',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -36,9 +36,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            // ['label' => 'Home', 'url' => ['/site/index']],
+            // ['label' => 'About', 'url' => ['/site/about']],
+            // ['label' => 'Contact', 'url' => ['/site/contact']],
+            Yii::$app->user->isGuest ? (['label' => 'SignUp', 'url' => ['/site/signup']]) : '',
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -62,13 +63,12 @@ AppAsset::register($this);
         ]) ?>
         <?= $content ?>
     </div>
+    <?= !(Yii::$app->user->isGuest) ? $this->render('menu.php') : ''; ?>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Room Reservation <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left">&copy; Book My Room <?= date('Y') ?></p>
     </div>
 </footer>
 

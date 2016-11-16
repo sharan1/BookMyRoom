@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\Privilege;
 
 class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -21,6 +21,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
+            [['FirstName', 'LastName', 'UserName', 'Email', 'PrivilegeID'], 'required'],
             [['PrivilegeID', 'IsActive'], 'integer'],
             [['FirstName', 'LastName'], 'string', 'max' => 55],
             [['Email', 'UserName'], 'string', 'max' => 50],
@@ -43,7 +44,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'Password' => 'Password',
             'PasswordHash' => 'Password Hash',
             'PhoneNum' => 'Phone Num',
-            'PrivilegeID' => 'Privilege ID',
+            'PrivilegeID' => 'Privilege',
             'IsActive' => 'Is Active',
         ];
     }
@@ -136,6 +137,16 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
 
         return null;
+    }
+
+    public function getPrivilege()
+    {
+        return Privilege::find()->where(['PrivilegeID' => $this->PrivilegeID])->one();
+    }
+
+    public function getFullName()
+    {
+        return $this->FirstName." ".$this->LastName;
     }
 }
 

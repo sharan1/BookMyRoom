@@ -40,7 +40,7 @@ class Area extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'AreaID' => 'Area ID',
+            'AreaID' => 'Area',
             'Name' => 'Name',
             'Type' => 'Type',
             'Num_Workspaces' => 'Num  Workspaces',

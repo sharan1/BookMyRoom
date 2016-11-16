@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Area;
 
 /**
  * This is the model class for table "Workspace".
@@ -30,7 +31,7 @@ class Workspace extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['AreaID'], 'required'],
+            [['Name','AreaID'], 'required'],
             [['AreaID', 'Capacity', 'IsActive'], 'integer'],
             [['AdditionalInfo'], 'string'],
             [['Name'], 'string', 'max' => 100],
@@ -43,12 +44,17 @@ class Workspace extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'WorkspaceID' => 'Workspace ID',
+            'WorkspaceID' => 'Workspace',
             'Name' => 'Name',
-            'AreaID' => 'Area ID',
+            'AreaID' => 'Area',
             'Capacity' => 'Capacity',
             'IsActive' => 'Is Active',
             'AdditionalInfo' => 'Additional Info',
         ];
+    }
+
+    public function getArea()
+    {
+        return Area::find()->where(['AreaID' => $this->AreaID])->one();
     }
 }

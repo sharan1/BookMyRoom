@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Privilege;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
@@ -20,15 +22,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'UserName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Password')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'PasswordHash')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'PhoneNum')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'PrivilegeID')->textInput() ?>
-
-    <?= $form->field($model, 'IsActive')->textInput() ?>
+    <?= $form->field($model, 'PrivilegeID')->dropdownList(Privilege::find()->select(['PrivilegeName', 'PrivilegeID'])->indexBy('PrivilegeID')->column(), ['prompt' => "Select Privilege"]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

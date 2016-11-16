@@ -6,16 +6,16 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
 
-$this->title = $model->UserID;
+$this->title = "User #".$model->UserID;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->UserID;
 ?>
 <div class="users-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->UserID], ['class' => 'btn btn-primary']) ?>
+    <div class="pull-right" style="padding-bottom:20px">
+        <?= Html::a('Update', ['update', 'id' => $model->UserID], ['class' => 'btn btn-primary', 'style' => 'margin-right:4px']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->UserID], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
+    </div>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -33,11 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'LastName',
             'Email:email',
             'UserName',
-            'Password',
-            'PasswordHash',
             'PhoneNum',
-            'PrivilegeID',
-            'IsActive',
+            [
+                'attribute' => 'PrivilegeID',
+                'format' => 'raw',
+                'value' => $model->privilege->PrivilegeName,
+            ],
         ],
     ]) ?>
 
