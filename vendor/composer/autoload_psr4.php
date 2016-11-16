@@ -17,5 +17,6 @@ return array(
     'kartik\\sidenav\\' => array($vendorDir . '/kartik-v/yii2-widget-sidenav'),
     'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
+    'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
 );

@@ -8,6 +8,7 @@ class ComposerStaticInit30d9abf13453dffec4c6be6c8e4e5a3c
 {
     public static $files = array (
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
@@ -31,6 +32,10 @@ class ComposerStaticInit30d9abf13453dffec4c6be6c8e4e5a3c
         'c' => 
         array (
             'cebe\\markdown\\' => 14,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\Process\\' => 26,
         ),
         'F' => 
         array (
@@ -83,6 +88,10 @@ class ComposerStaticInit30d9abf13453dffec4c6be6c8e4e5a3c
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
         ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
@@ -102,6 +111,20 @@ class ComposerStaticInit30d9abf13453dffec4c6be6c8e4e5a3c
             'Diff' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/php-diff/lib',
+            ),
+        ),
+        'C' => 
+        array (
+            'ComponentInstaller' => 
+            array (
+                0 => __DIR__ . '/..' . '/robloach/component-installer/src',
+            ),
+        ),
+        'A' => 
+        array (
+            'Assetic' => 
+            array (
+                0 => __DIR__ . '/..' . '/kriswallsmith/assetic/src',
             ),
         ),
     );
