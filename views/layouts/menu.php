@@ -1,7 +1,7 @@
 <?php 
 use \yii\helpers\Url;
 ?>
-<aside class="main-sidebar">
+<aside class="main-sidebar" style="position:fixed">
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
