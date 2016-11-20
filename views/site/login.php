@@ -5,15 +5,28 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\forms\Register */
 /* @var $form yii\widgets\ActiveForm */
-
+//$this->registerCSSFile()
 ?>
+<!--Background image-
+<style type="text/css">
+-->
+
+  <style type="text/css">
+body
+ {
+     background-image: url(images/room.jpg);
+     background-repeat: no-repeat;
+     background-size:cover;
+ }
+ </style>
+
 <div class="login-box">
-    <div class="login-logo">
+   <!-- <div class="login-logo">
         <a href=""><b>Login Form</b></a>
     </div>
-    <!-- /.login-logo -->
+    /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg"><!-- Sign in to start your session --></p>
+        <p class="login-box-msg">LogIn</p>
 
         <?php $form = ActiveForm::begin(); ?>
 
@@ -30,6 +43,15 @@ use yii\helpers\Html;
         <div class="form-group ">
             <?= Html::submitButton('Submit', ['class' => 'btn btn-primary btn-block btn-flat']) ?>
         </div><!-- /.col -->
+
+<!-- Sign Up and Forgot Password -->
+ <div class="container" >
+  <span class="psw"> Forgot <a href="#">password?</a></span>
+  </div>
+
+
+
+
         <?php ActiveForm::end(); ?>
     </div>
     <!-- /.login-box-body -->

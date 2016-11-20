@@ -14,6 +14,7 @@ use \yii\helpers\Url;
             <li><a href=<?= Url::to(['/area']) ?>><i class="fa fa-user"></i> <span>Areas</span></a></li>
             <li><a href=<?= Url::to(['/workspace']) ?>><i class="fa fa-photo"></i> <span>Workspaces</span></a></li>
             <li><a href=<?= Url::to(['/booking-request']) ?>><i class="fa fa-columns"></i> <span>Booking Request</span></a></li>
+            <li><a href=<?= Url::to(['/booking-history']) ?>><i class="fa fa-columns"></i> <span>Booking History</span></a></li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>
