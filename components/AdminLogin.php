@@ -10,9 +10,9 @@ use yii\base\Model;
 class AdminLogin extends Model
 {
 
-    public $username;
-    public $email;
-    public $password;
+    public $UserName;
+    public $Email;
+    public $Password;
     public $rememberMe = true;
     private $_user = false;
 
@@ -22,9 +22,9 @@ class AdminLogin extends Model
     public function rules()
     {
         return [
-            [['password', 'email'], 'required'],
+            [['Password', 'UserName'], 'required'],
             ['rememberMe', 'boolean'],
-            ['password', 'validatePassword'],
+            ['Password', 'validatePassword'],
         ];
     }
 
@@ -44,7 +44,7 @@ class AdminLogin extends Model
             {
                 if ($user->IsActive != 0) 
                 {
-                        if (!$user || !$user->verifyPassword($this->password)) 
+                        if (!$user || !$user->verifyPassword($this->Password)) 
                         {
                             $this->addError($attribute, 'Incorrect username or password.');
                         }
@@ -83,13 +83,13 @@ class AdminLogin extends Model
     {
         if ($this->_user === false) 
         {
-            if(strpos($this->email, '@') == -1)
+            if(strpos($this->UserName, '@') == -1)
             {
-                $this->_user = User::findByEmail($this->email);
+                $this->_user = User::findByEmail($this->UserName);
             }
             else
             {
-                $this->_user = User::findByUsername($this->email);
+                $this->_user = User::findByUsername($this->UserName);
             }
         }
         return $this->_user;

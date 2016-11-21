@@ -7,6 +7,7 @@ use app\models\Privilege;
 
 class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $confirmPassword;
     /**
      * @inheritdoc
      */
@@ -25,8 +26,12 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['PrivilegeID', 'IsActive'], 'integer'],
             [['FirstName', 'LastName'], 'string', 'max' => 55],
             [['Email', 'UserName'], 'string', 'max' => 50],
-            [['Password', 'PasswordHash'], 'string', 'max' => 75],
+            [['UserName','Email'], 'unique'],
+            [['Password', 'PasswordHash','confirmPassword'], 'string', 'max' => 75],
+            [['confirmPassword'], 'safe'],
             [['PhoneNum'], 'string', 'max' => 15],
+            ['Password', 'string', 'min' => 6],
+            ['confirmPassword', 'compare', 'compareAttribute' => 'Password', 'message' => 'The password does not match.'],
         ];
     }
 
@@ -46,12 +51,13 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'PhoneNum' => 'Phone Num',
             'PrivilegeID' => 'Privilege',
             'IsActive' => 'Is Active',
+            'confirmPassword' => 'Confirm Password'
         ];
     }
 
     public function verifyPassword($password)
     {
-        if($this->Password == $password)
+        if($this->Password == md5($password))
             return true;
         else
             return false;
@@ -125,7 +131,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->password === md5($password);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -147,6 +153,18 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getFullName()
     {
         return $this->FirstName." ".$this->LastName;
+    }
+
+    public function beforeSave($insert)
+    {
+        if($insert)
+        {
+            if(!isset($this->Password) || empty($this->Password))
+                $this->Password = "welcome";
+            $this->Password = md5($this->Password);
+            $this->PasswordHash = Yii::$app->getSecurity()->generateRandomString();
+        }
+        return parent::beforeSave($insert);
     }
 }
 

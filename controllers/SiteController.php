@@ -10,6 +10,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
 use app\models\Users;
+use app\components\ResetProfilePasswordForm;
 use app\components\AdminLogin; 
 
 class SiteController extends Controller
@@ -90,26 +91,40 @@ class SiteController extends Controller
         } 
         else 
         {
-            $model = new AdminLogin();
-            if ($model->load(Yii::$app->request->post()) && $model->login()) 
+            if(!empty($_POST))
             {
-                $userDetails = Users::findIdentity(Yii::$app->user->id);
-                if (isset($userDetails)) 
+                $post = $_POST['AdminLogin'];
+                if($post["UserName"] != "" && $post["Password"] != "")
                 {
-                    $this->redirect(['/users'])->send();
-                } 
-                else 
-                {
-                    return $this->render('login', [
-                            'model' => $model,
-                    ]);
+                    $model->UserName = $post["UserName"];
+                    $model->Password = $post["Password"];
+                    if ($model->login()) 
+                    {
+                        $userDetails = Users::findIdentity(Yii::$app->user->id);
+                        if (isset($userDetails)) 
+                        {
+                            $this->redirect(['/users'])->send();
+                        } 
+                        else 
+                        {
+                            return $this->render('login', [
+                                    'model' => $model,
+                            ]);
+                        }
+                    } 
+                    else 
+                    {
+                        return $this->render('login', [
+                                'model' => $model,
+                        ]);
+                    }
                 }
-            } 
-            else 
+            }
+            else
             {
                 return $this->render('login', [
-                        'model' => $model,
-                ]);
+                                'model' => $model,
+                        ]);
             }
         }
     }
@@ -124,6 +139,39 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionResetPassword($hash, $id)
+    {
+        $resetpasswordmodel = new ResetProfilePasswordForm();
+        if ($resetpasswordmodel->load(Yii::$app->request->post())) 
+        {
+            $user = Users::findIdentity($id);
+            $user->Password = md5($resetpasswordmodel->changepassword);
+            $user->save();
+            $this->redirect(['/users'])->send();
+        }
+
+        return $this->render('ResetProfilePassword', [
+            'resetpasswordmodel' => $resetpasswordmodel
+        ]);
+    }
+
+    public function actionSignup()
+    {
+        $model = new Users();
+        if($model->load(Yii::$app->request->post())) 
+        {
+            $model->PrivilegeID = 3;
+            $model->save();
+            return $this->redirect(['/users'])->send();
+        } 
+        else 
+        {
+            return $this->render('signup', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**

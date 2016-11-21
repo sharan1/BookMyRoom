@@ -18,13 +18,13 @@ use yii\helpers\Html;
         <?php $form = ActiveForm::begin(); ?>
 
         <div class="form-group has-feedback">
-            <?= Html::activeTextInput($model, 'email', ['class' => 'form-control', 'placeholder' => 'Enter Email Address']) ?>
-            <?= Html::error($model, 'email') ?>
+            <?= Html::activeTextInput($model, 'UserName', ['class' => 'form-control', 'placeholder' => 'Enter UserName']) ?>
+            <?= Html::error($model, 'UserName') ?>
         </div>
 
         <div class="form-group has-feedback">
-            <?= Html::activePasswordInput($model, 'password', ['class' => 'form-control', 'placeholder' => 'Enter Password']) ?>
-            <?= Html::error($model, 'password') ?>
+            <?= Html::activePasswordInput($model, 'Password', ['class' => 'form-control', 'placeholder' => 'Enter Password']) ?>
+            <?= Html::error($model, 'Password') ?>
         </div>
 
         <div class="form-group ">
