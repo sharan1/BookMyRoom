@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -20,8 +21,11 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-</head>
-<body class="hold-transition skin-red sidebar-mini">
+  
+</head> <!-- no-repeat center center fixed <!background="images/room.jpg"--> -->
+<body class="hold-transition skin-red sidebar-mini" >
+<style>
+</style>
 <?php $this->beginBody() ?>
 
 <div class="wrap">
@@ -70,6 +74,7 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; Book My Room <?= date('Y') ?></p>
     </div>
+
 </footer>
 
 <?php $this->endBody() ?>
