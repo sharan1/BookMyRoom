@@ -8,6 +8,7 @@ use app\models\BookingRequestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * BookingRequestController implements the CRUD actions for BookingRequest model.
@@ -63,8 +64,7 @@ class BookingRequestController extends Controller
      */
     public function actionCreate()
     {
-        $model = new BookingRequest();
-
+        $model = new BookingRequest;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->RequestID]);
         } else {
@@ -104,6 +104,139 @@ class BookingRequestController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionConfirm($id)
+    {
+        $model = $this->findModel($id);
+        $model->Booking_Status = 2;
+        $model->save();
+        return $this->redirect(['index']);
+    }
+
+    public function actionCancel($id)
+    {
+        $model = $this->findModel($id);
+        $model->Booking_Status = 0;
+        $model->save();
+        return $this->redirect(['userhistory']);
+    }
+
+    public function actionUserhistory()
+    {
+        $userid = Yii::$app->user->id;
+        if($userid)
+        {
+            $past_bookings = BookingRequest::find()->where(['UserID' => $userid])->andWhere('StartTime <= NOW()')->all();
+            $future_bookings = BookingRequest::find()->where(['UserID' => $userid])->andWhere('StartTime > NOW()')->all();
+            $mapping = [];
+            foreach ($past_bookings as $key => $value) 
+            {
+                $temp_map = $value->workspaces;
+                if(!isset($mapping[$value->RequestID]))
+                {
+                    $mapping[$value->RequestID] = [];
+                }
+                foreach ($temp_map as $key1 => $value1) 
+                {
+                   $mapping[$value->RequestID][] = $value1->Name;
+                }
+            }
+            foreach ($future_bookings as $key => $value) 
+            {
+                $temp_map = $value->workspaces;
+                if(!isset($mapping[$value->RequestID]))
+                {
+                    $mapping[$value->RequestID] = [];
+                }
+                foreach ($temp_map as $key1 => $value1) 
+                {
+                   $mapping[$value->RequestID][] = $value1->Name;
+                }
+            }
+            return $this->render('user-history', [
+                'past_bookings' => $past_bookings,
+                'future_bookings' => $future_bookings,
+                'mapping' => $mapping,
+            ]);
+        }
+        else
+        {
+            return $this->redirect(['users/home']);
+        }
+
+    }
+
+    public function actionHistory()
+    {
+        $all_bookings = BookingRequest::find()->where(['Booking_Status' => array(0,2)])->orderBy('RequestedOn')->all();
+        $mapping = [];
+        foreach ($all_bookings as $key => $value) 
+        {
+            $temp_map = $value->workspaces;
+            if(!isset($mapping[$value->RequestID]))
+            {
+                $mapping[$value->RequestID] = [];
+            }
+            foreach ($temp_map as $key1 => $value1) 
+            {
+               $mapping[$value->RequestID][] = $value1->Name;
+            }
+        }
+        return $this->render('history', [
+            'all_bookings' => $all_bookings,
+            'mapping' => $mapping,
+        ]);
+    }
+
+    public function actionBookingavail()
+    {
+        $result = [];
+        $start_time = '';
+        $end_time = '';
+        $area_id = '';
+        $workspace_id = '';
+        $reason = '';
+
+        if(!empty($_POST))
+        {
+            $reason = $_POST['Reason'];
+            $start_time = $_POST['start_time'];
+            $end_time = $_POST['end_time'];
+            $area_id = $_POST['AreaID'];
+            $workspace_id = $_POST['WorkspaceID'];
+
+
+            $query = new Query;
+            $query->select('w.*, a.Name as AreaName')->distinct()
+                  ->from('Workspace w')
+                  ->innerJoin('RequestBookingPairing rbp', 'w.WorkspaceID = rbp.WorkspaceID')
+                  ->innerJoin('BookingRequest br', 'br.RequestID = rbp.RequestID')
+                  ->innerJoin('Area a', 'a.AreaID = w.AreaID')
+                  ->where("(br.StartTime > '".$start_time."' AND br.StartTime > '".$end_time."') OR (br.EndTime < '".$start_time."' AND br.EndTime < '".$end_time."')")
+                  ->andWhere(['w.IsActive' => 1, 'a.IsActive' => 1]);
+            if($_POST['AreaID'] != '')
+            {
+                $query->andWhere(['w.AreaID' => $_POST['AreaID']]);
+            }
+            if($_POST['WorkspaceID'] != '')
+            {
+                $query->andWhere(['w.WorkspaceID' => $_POST['WorkspaceID']]);
+            }
+            $result = $query->all();
+            // echo "<pre>";
+            // var_dump($result);
+            // die;
+        }
+
+        return $this->render('bookingavail', [
+            'result' => $result,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+            'area_id' => $area_id,
+            'workspace_id' => $workspace_id,
+            'reason' => $reason
+        ]);
     }
 
     /**

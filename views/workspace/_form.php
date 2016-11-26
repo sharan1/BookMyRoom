@@ -16,7 +16,7 @@ use app\models\Area;
 
     <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'AreaID')->dropdownList(Area::find()->select(['Name', 'AreaID'])->indexBy('AreaID')->column(), ['prompt' => "Select Area"]); ?>
+    <?= $form->field($model, 'AreaID')->dropdownList(Area::find()->select(['Name', 'AreaID'])->indexBy('AreaID')->column(), ['prompt' => "Select Area", 'class' => 'select2']); ?>
 
     <?= $form->field($model, 'Capacity')->textInput() ?>
 

@@ -24,7 +24,7 @@ use app\models\Privilege;
 
     <?= $form->field($model, 'PhoneNum')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'PrivilegeID')->dropdownList(Privilege::find()->select(['PrivilegeName', 'PrivilegeID'])->indexBy('PrivilegeID')->column(), ['prompt' => "Select Privilege"]); ?>
+    <?= $form->field($model, 'PrivilegeID')->dropdownList(Privilege::find()->select(['PrivilegeName', 'PrivilegeID'])->indexBy('PrivilegeID')->column(), ['prompt' => "Select Privilege", 'class' => "select2"]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

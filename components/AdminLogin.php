@@ -1,6 +1,7 @@
 <?php namespace app\components;
 
 use app\models\User;
+use app\models\Users;
 use Yii;
 use yii\base\Model;
 
@@ -83,7 +84,7 @@ class AdminLogin extends Model
     {
         if ($this->_user === false) 
         {
-            if(strpos($this->UserName, '@') == -1)
+            if(strpos($this->UserName, '@') !== false)
             {
                 $this->_user = User::findByEmail($this->UserName);
             }
@@ -93,5 +94,31 @@ class AdminLogin extends Model
             }
         }
         return $this->_user;
+    }
+
+    public static function sendForgotPasswordMail($email)
+    {
+        $user = Users::findByEmail($email);
+        if(isset($user))
+        {
+            $link = 'http://localhost'.Yii::$app->request->scriptUrl.'?r=site/reset-password&hash='.$user->PasswordHash.'&username='.$user->UserName;
+            $message = "Hi ".$user->FirstName.",\n\t Please reset your password by clicking on this link:\n\n\t<a href='".$link."'>".$link."</a>\n\nRegards,\nTeam BookMyRoom\n";
+            $to = $email;
+            $subject = "Reset Password: BookMyRoom";
+            $headers = 'From: BookMyRoom <admin@bookmyroom.com>';
+            $status = mail($to, $subject, $message, $headers);
+            if($status)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }

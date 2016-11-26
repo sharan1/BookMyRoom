@@ -41,7 +41,7 @@ class BookingRequestSearch extends BookingRequest
      */
     public function search($params)
     {
-        $query = BookingRequest::find();
+        $query = BookingRequest::find()->where(['Booking_Status' => 1])->orderBy('RequestedOn DESC');
 
         // add conditions that should always apply here
 

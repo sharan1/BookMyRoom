@@ -12,8 +12,8 @@
       public function rules()
       {
           return [
-              ['changepassword', 'required'],
-              ['reenterpassword', 'required'],
+              [['changepassword','reenterpassword'], 'required'],
+              ['changepassword', 'string', 'min' => 6],
               ['reenterpassword', 'compare', 'compareAttribute'=>'changepassword', 'message'=>"Passwords don't match"]
           ];
       }

@@ -80,7 +80,14 @@ class SiteController extends Controller
             $userDetails = Users::findIdentity(Yii::$app->user->id);
             if (isset($userDetails))
             {
-                $this->redirect(['/users'])->send();
+                if($userDetails->PrivilegeID == 1 || $userDetails->PrivilegeID == 2)
+                {
+                    $this->redirect(['/users/home'])->send();
+                }
+                else
+                {
+                    $this->redirect(['/users'])->send();
+                }
             } 
             else 
             {
@@ -93,17 +100,23 @@ class SiteController extends Controller
         {
             if(!empty($_POST))
             {
-                $post = $_POST['AdminLogin'];
-                if($post["UserName"] != "" && $post["Password"] != "")
+                if($_POST["UserName"] != "" && $_POST["Password"] != "")
                 {
-                    $model->UserName = $post["UserName"];
-                    $model->Password = $post["Password"];
+                    $model->UserName = $_POST["UserName"];
+                    $model->Password = $_POST["Password"];
                     if ($model->login()) 
                     {
                         $userDetails = Users::findIdentity(Yii::$app->user->id);
                         if (isset($userDetails)) 
                         {
-                            $this->redirect(['/users'])->send();
+                            if($userDetails->PrivilegeID == 1 || $userDetails->PrivilegeID == 2)
+                            {
+                                $this->redirect(['/users/home'])->send();
+                            }
+                            else
+                            {
+                                $this->redirect(['/users'])->send();
+                            }
                         } 
                         else 
                         {
@@ -141,18 +154,33 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionResetPassword($hash, $id)
+    public function actionResetPassword()
     {
+        $hash=$_GET['hash'];
+        $username = $_GET['username'];
         $resetpasswordmodel = new ResetProfilePasswordForm();
-        if ($resetpasswordmodel->load(Yii::$app->request->post())) 
+        
+        if (!empty($_POST)) 
         {
-            $user = Users::findIdentity($id);
+            $resetpasswordmodel->load(Yii::$app->request->post());
+            $user = Users::findByUsername($username);
+            if($user->PasswordHash != $hash)
+            {
+                die("Wrong Link");
+            }
             $user->Password = md5($resetpasswordmodel->changepassword);
             $user->save();
-            $this->redirect(['/users'])->send();
+            if($user->PrivilegeID == 1 || $user->PrivilegeID == 2)
+            {
+                $this->redirect(['/users/home'])->send();
+            }
+            else
+            {
+                $this->redirect(['/users'])->send();
+            }
         }
 
-        return $this->render('ResetProfilePassword', [
+        return $this->render('reset-password', [
             'resetpasswordmodel' => $resetpasswordmodel
         ]);
     }
@@ -164,7 +192,14 @@ class SiteController extends Controller
         {
             $model->PrivilegeID = 3;
             $model->save();
-            return $this->redirect(['/users'])->send();
+            if($model->PrivilegeID == 1 || $model->PrivilegeID == 2)
+            {
+                $this->redirect(['/users/home'])->send();
+            }
+            else
+            {
+                $this->redirect(['/users'])->send();
+            }
         } 
         else 
         {

@@ -94,6 +94,15 @@ class UsersController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionHome()
+    {
+        $data = [];
+        return $this->render('home', [
+            'data' => $data
+        ]);
+    }
+
+
     /**
      * Finds the Users model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

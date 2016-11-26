@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\components\MapConstants;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\BookingRequest */
@@ -15,11 +16,11 @@ $this->params['breadcrumbs'][] = $model->RequestID;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="pull-right" style="padding-bottom:20px">
-        <?= Html::a('Update', ['update', 'id' => $model->RequestID], ['class' => 'btn btn-primary', 'style' => 'margin-right:4px']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->RequestID], [
+        <?= Html::a('Confirm', ['confirm', 'id' => $model->RequestID], ['class' => 'btn btn-success', 'style' => 'margin-right:4px']) ?>
+        <?= Html::a('Cancel', ['cancel', 'id' => $model->RequestID], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Are you sure you want to cancel this booking?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -38,7 +39,11 @@ $this->params['breadcrumbs'][] = $model->RequestID;
             'StartTime',
             'EndTime',
             'Reason:ntext',
-            'Booking_Status',
+            [
+                'attribute' => 'Booking_Status',
+                'format' => 'raw',
+                'value' => MapConstants::getBookingStatus()[$model->Booking_Status],
+            ],
             'Additional_Info:ntext',
             'Last_Updated',
         ],

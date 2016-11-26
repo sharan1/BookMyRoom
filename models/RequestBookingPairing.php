@@ -45,4 +45,9 @@ class RequestBookingPairing extends \yii\db\ActiveRecord
             'IsActive' => 'Is Active',
         ];
     }
+
+    public function getWorkspaces()
+    {
+        return $this->hasMany(Workspace::className(), ['WorkspaceID' => 'WorkspaceID'])->all();
+    }
 }
