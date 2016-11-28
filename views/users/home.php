@@ -19,46 +19,54 @@ $this->title = 'Dashboard';
                                 <div class="general-overiew text-center">
                                     <div class="bottom">
                                         <div class="row">
+                                            <a href="http://localhost<?=Yii::$app->request->scriptUrl;?>?r=booking-request">
                                             <div class="col-sm-3">
                                                 <div class="info-box">
                                                     <div class="count">
-                                                        <span class="number"><?php echo '1' ?></span>
+                                                        <span class="number"><?= $data['pending']; ?></span>
                                                         <p>Pending Requests</p>
                                                     </div>
                                                     <div class="add-action">
                                                     </div>
                                                 </div>
                                             </div>
+                                            </a>
+                                            <a href="http://localhost<?=Yii::$app->request->scriptUrl;?>?r=booking-request/history">
                                             <div class="col-sm-3">
                                                 <div class="info-box">
                                                     <div class="count">
-                                                        <span class="number"><?php echo '1' ?></span>
+                                                        <span class="number"><?= $data['confirmed']; ?></span>
                                                         <p>Accepted Requests</p>
                                                     </div>
                                                     <div class="add-action">
                                                     </div>
                                                 </div>
                                             </div>
+                                            </a>
+                                            <a href="http://localhost<?=Yii::$app->request->scriptUrl;?>?r=booking-request/history">
                                             <div class="col-sm-3">
                                                 <div class="info-box">
                                                     <div class="count">
-                                                        <span class="number"><?php echo '1' ?></span>
+                                                        <span class="number"><?= $data['cancelled']; ?></span>
                                                         <p>Cancelled Requests</p>
                                                     </div>
                                                     <div class="add-action">
                                                     </div>
                                                 </div>
                                             </div>
+                                            </a>
+                                            <a href="http://localhost<?=Yii::$app->request->scriptUrl;?>?r=booking-request/history">
                                             <div class="col-sm-3">
                                                 <div class="info-box">
                                                     <div class="count">
-                                                        <span class="number"><?php echo '1' ?></span>
+                                                        <span class="number"><?= $data['all']; ?></span>
                                                         <p>Total Requests</p>
                                                     </div>
                                                     <div class="add-action">
                                                     </div>
                                                 </div>
                                             </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

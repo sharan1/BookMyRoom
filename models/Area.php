@@ -29,6 +29,7 @@ class Area extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['Name', 'Num_Workspaces', 'Type'], 'required'],
             [['Type', 'Num_Workspaces', 'IsActive'], 'integer'],
             [['Name'], 'string', 'max' => 55],
         ];

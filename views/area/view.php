@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\components\MapConstants;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Area */
@@ -30,7 +31,11 @@ $this->params['breadcrumbs'][] = $model->AreaID;
         'attributes' => [
             'AreaID',
             'Name',
-            'Type',
+            [
+                'attribute' => 'Type',
+                'format' => 'raw',
+                'value' => MapConstants::getAreaType()[$model->Type]
+            ],
             'Num_Workspaces',
         ],
     ]) ?>

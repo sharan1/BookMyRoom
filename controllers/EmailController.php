@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Email;
 use app\models\EmailSearch;
-use yii\web\Controller;
+use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -15,26 +15,15 @@ use yii\filters\VerbFilter;
 class EmailController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Lists all Email models.
      * @return mixed
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $searchModel = new EmailSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,6 +40,10 @@ class EmailController extends Controller
      */
     public function actionView($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -63,6 +56,10 @@ class EmailController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = new Email();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -82,6 +79,10 @@ class EmailController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -91,19 +92,6 @@ class EmailController extends Controller
                 'model' => $model,
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing Email model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

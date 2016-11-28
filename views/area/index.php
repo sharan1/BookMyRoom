@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\components\MapConstants;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AreaSearch */
@@ -22,11 +23,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            
+            ['class' => 'yii\grid\SerialColumn'],            
             'Name',
-            'Type',
+            [
+                'attribute' => 'Type',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return MapConstants::getAreaType()[$model->Type];
+                },
+                'filter' => MapConstants::getAreaType(),
+            ],
             'Num_Workspaces',
 
             ['class' => 'yii\grid\ActionColumn'],

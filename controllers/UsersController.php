@@ -8,6 +8,7 @@ use app\models\UsersSearch;
 use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\BookingRequest;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -21,6 +22,10 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $searchModel = new UsersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -37,6 +42,10 @@ class UsersController extends Controller
      */
     public function actionView($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -49,6 +58,10 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = new Users();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -68,6 +81,10 @@ class UsersController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -87,6 +104,10 @@ class UsersController extends Controller
      */
     public function actionDelete($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
         $model->IsActive = 0;
         $model->save();
@@ -96,7 +117,15 @@ class UsersController extends Controller
 
     public function actionHome()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $data = [];
+        $data['pending'] = BookingRequest::find()->where(['Booking_Status' => 1])->count();
+        $data['cancelled'] = BookingRequest::find()->where(['Booking_Status' => 0])->count();
+        $data['confirmed'] = BookingRequest::find()->where(['Booking_Status' => 2])->count();
+        $data['all'] = BookingRequest::find()->count();
         return $this->render('home', [
             'data' => $data
         ]);

@@ -22,7 +22,7 @@ use app\models\Area;
 
     <?= $form->field($model, 'AdditionalInfo')->textarea(['rows' => 6]) ?>
 
-    <div class="form-group">
+    <div class="form-group" align="center">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

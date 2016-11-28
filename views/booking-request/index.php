@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Last_Updated',
 
             [
-                'class' => 'yii\grid\ActionColumn','template' => '{view} {confirm} {cancel}',
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {confirm} {cancel}',
                 'buttons' => [
                     'view' => function($url, $model) {
                         return Html::a('View', ['view', 'id' => $model->RequestID], [

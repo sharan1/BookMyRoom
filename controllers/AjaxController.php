@@ -10,6 +10,9 @@ use app\models\User;
 use app\models\Users;
 use app\components\AdminLogin; 
 use yii\db\Query;
+use app\models\BookingRequest;
+use app\models\RequestBookingPairing;
+use app\models\Email;
 
 
 class AjaxController extends Controller
@@ -82,6 +85,23 @@ class AjaxController extends Controller
     public function actionBookreservation()
     {
         $list = $_POST['list'];
+        $model = new BookingRequest;
+        $model->UserID = Yii::$app->user->id;
+        $model->StartTime = $_POST['start'];
+        $model->EndTime = $_POST['end'];
+        $model->Reason = $_POST['reason'];
+        $model->Additional_Info = $_POST['addinfo'];
+        $model->Booking_Status = 1;
+        $model->save();
         
+        Email::sendRequestRecievedMail($model);
+        
+        foreach ($list as $key => $value) 
+        {
+           $temp = new RequestBookingPairing;
+           $temp->RequestID = $model->RequestID;
+           $temp->WorkspaceID = (int)$value;
+           $temp->save();
+        }
     }
 }

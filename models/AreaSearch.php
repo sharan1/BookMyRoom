@@ -6,12 +6,14 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Area;
+use app\components\MapConstants;
 
 /**
  * AreaSearch represents the model behind the search form about `app\models\Area`.
  */
 class AreaSearch extends Area
 {
+    public $AreaType;
     /**
      * @inheritdoc
      */
@@ -19,7 +21,7 @@ class AreaSearch extends Area
     {
         return [
             [['AreaID', 'Type', 'Num_Workspaces', 'IsActive'], 'integer'],
-            [['Name'], 'safe'],
+            [['Name', 'AreaType'], 'safe'],
         ];
     }
 
@@ -48,6 +50,11 @@ class AreaSearch extends Area
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        // $dataProvider->sort->attributes['AreaType'] = [
+        //     'asc' => ['Type' => SORT_ASC],
+        //     'desc' => ['Type' => SORT_DESC],
+        // ];
 
         $this->load($params);
 

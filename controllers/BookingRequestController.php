@@ -5,10 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\BookingRequest;
 use app\models\BookingRequestSearch;
-use yii\web\Controller;
+use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
+use app\models\Email;
 
 /**
  * BookingRequestController implements the CRUD actions for BookingRequest model.
@@ -16,26 +17,15 @@ use yii\db\Query;
 class BookingRequestController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Lists all BookingRequest models.
      * @return mixed
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $searchModel = new BookingRequestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,6 +42,10 @@ class BookingRequestController extends Controller
      */
     public function actionView($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,8 +58,13 @@ class BookingRequestController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = new BookingRequest;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Email::sendRequestRecievedMail($model);
             return $this->redirect(['view', 'id' => $model->RequestID]);
         } else {
             return $this->render('create', [
@@ -82,6 +81,10 @@ class BookingRequestController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -93,24 +96,16 @@ class BookingRequestController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing BookingRequest model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
     public function actionConfirm($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
         $model->Booking_Status = 2;
         $model->save();
+        Email::sendStatusChangeMail($model);
         return $this->redirect(['index']);
     }
 
@@ -119,7 +114,11 @@ class BookingRequestController extends Controller
         $model = $this->findModel($id);
         $model->Booking_Status = 0;
         $model->save();
-        return $this->redirect(['userhistory']);
+        Email::sendStatusChangeMail($model);
+        if(Yii::$app->user->identity->PrivilegeID == 1)
+            return $this->redirect(['index']);
+        else
+            return $this->redirect(['userhistory']);
     }
 
     public function actionUserhistory()
@@ -169,6 +168,10 @@ class BookingRequestController extends Controller
 
     public function actionHistory()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $all_bookings = BookingRequest::find()->where(['Booking_Status' => array(0,2)])->orderBy('RequestedOn')->all();
         $mapping = [];
         foreach ($all_bookings as $key => $value) 
@@ -192,11 +195,13 @@ class BookingRequestController extends Controller
     public function actionBookingavail()
     {
         $result = [];
+        $workspace_dropdown = [];
         $start_time = '';
         $end_time = '';
         $area_id = '';
         $workspace_id = '';
         $reason = '';
+        $additional_info = '';
 
         if(!empty($_POST))
         {
@@ -204,14 +209,23 @@ class BookingRequestController extends Controller
             $start_time = $_POST['start_time'];
             $end_time = $_POST['end_time'];
             $area_id = $_POST['AreaID'];
+            if($area_id != '')
+            {
+                $q = new Query;
+                $q->select('WorkspaceID, Name')
+                  ->from('Workspace')
+                  ->where(['AreaID' => $area_id]);
+                $data = $q->all();
+                $workspace_dropdown = array_column($data, 'Name', 'WorkspaceID');
+            }
             $workspace_id = $_POST['WorkspaceID'];
-
+            $additional_info = $_POST['Additional_Info'];
 
             $query = new Query;
             $query->select('w.*, a.Name as AreaName')->distinct()
                   ->from('Workspace w')
-                  ->innerJoin('RequestBookingPairing rbp', 'w.WorkspaceID = rbp.WorkspaceID')
-                  ->innerJoin('BookingRequest br', 'br.RequestID = rbp.RequestID')
+                  ->leftJoin('RequestBookingPairing rbp', 'w.WorkspaceID = rbp.WorkspaceID')
+                  ->leftJoin('BookingRequest br', 'br.RequestID = rbp.RequestID')
                   ->innerJoin('Area a', 'a.AreaID = w.AreaID')
                   ->where("(br.StartTime > '".$start_time."' AND br.StartTime > '".$end_time."') OR (br.EndTime < '".$start_time."' AND br.EndTime < '".$end_time."')")
                   ->andWhere(['w.IsActive' => 1, 'a.IsActive' => 1]);
@@ -235,7 +249,9 @@ class BookingRequestController extends Controller
             'end_time' => $end_time,
             'area_id' => $area_id,
             'workspace_id' => $workspace_id,
-            'reason' => $reason
+            'reason' => $reason,
+            'additional_info' => $additional_info,
+            'workspace_dropdown' => $workspace_dropdown
         ]);
     }
 

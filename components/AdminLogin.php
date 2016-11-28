@@ -4,6 +4,7 @@ use app\models\User;
 use app\models\Users;
 use Yii;
 use yii\base\Model;
+use app\models\Email;
 
 /**
  * Login form
@@ -102,11 +103,13 @@ class AdminLogin extends Model
         if(isset($user))
         {
             $link = 'http://localhost'.Yii::$app->request->scriptUrl.'?r=site/reset-password&hash='.$user->PasswordHash.'&username='.$user->UserName;
-            $message = "Hi ".$user->FirstName.",\n\t Please reset your password by clicking on this link:\n\n\t<a href='".$link."'>".$link."</a>\n\nRegards,\nTeam BookMyRoom\n";
+            $message = "Hi ".$user->FirstName.",\n\t Please reset your password by clicking on this link:\n\n\t$link\n\nRegards,\nTeam BookMyRoom\n";
             $to = $email;
             $subject = "Reset Password: BookMyRoom";
             $headers = 'From: BookMyRoom <admin@bookmyroom.com>';
             $status = mail($to, $subject, $message, $headers);
+
+            Email::addNew($to, $message, $subject, 'ForgotPassword', $user->UserID);
             if($status)
             {
                 return true;

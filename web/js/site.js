@@ -20,11 +20,10 @@ $(document).ready(function()
         });
     });
 
-    $('.rp-button').on('click', function(e)
-    {
-      e.preventDefault();
-      email_val = $('.email-text').val();
-      //alert(email_val);
+    $('.rp-button').on('click', function(e) {
+        e.preventDefault();
+        email_val = $('.email-text').val();
+        //alert(email_val);
         $.ajax({
            url: "?r=ajax/message",
            type: 'post',
@@ -47,15 +46,23 @@ $(document).ready(function()
               list.push($(this).attr('id'));
             }
         });
-        // //alert(email_val);
-        $.ajax({
-           url: "?r=ajax/bookreservation",
-           type: 'post',
-           data: {list: list, start: $('#start_time').val(), end: $('#end_time').val()},
-           success: function (data) {
-           }
 
-        });
+        if (list.length === 0) 
+        {
+            alert("You have to select atleast one space to book");
+        }
+        else
+        {
+            $.ajax({
+               url: "?r=ajax/bookreservation",
+               type: 'post',
+               data: {list: list, start: $('#start_time').val(), end: $('#end_time').val(), reason: $('#reason-avail').val(), addinfo: $('#info-avail').val()},
+               success: function (data) {
+               }
+
+            });
+            window.location.href = "?r=booking-request/userhistory";
+        }
     });
 
     $('#signup-form').on('beforeSubmit', function (e) {
@@ -78,6 +85,36 @@ $(document).ready(function()
 
         });
         return true;
+    });
+
+    $('#submit-avail').on('click', function(e){
+        var cur_time = new Date($.now());
+        var start = new Date($('#start_time').val());
+        if($('#start_time').val() == '')
+        {
+            e.preventDefault();
+            alert("Start Time is mandatory");
+        }
+        else if($('#end_time').val() == '')
+        {
+            e.preventDefault();
+            alert("End Time is mandatory");
+        }
+        else if($('#reason-avail').val() == '')
+        {
+            e.preventDefault();
+            alert("Purpose of booking is mandatory");
+        }
+        else if($('#start_time').val() > $('#end_time').val())
+        {
+            e.preventDefault();
+            alert("End Time must be greater than start time");
+        }
+        else if(start < cur_time)
+        {
+            e.preventDefault();
+            alert("Booking for past time cannot be done.");
+        }
     });
 
     function exportTableToCSV($table, filename) {

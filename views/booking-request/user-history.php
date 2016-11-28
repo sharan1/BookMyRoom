@@ -15,7 +15,7 @@ $statuses = MapConstants::getBookingStatus();
 <div class="booking-request-index">
     <h2><?= Html::encode($this->title) ?></h2>
     <div class="pull-right" style="padding-bottom:20px">
-        <?= Html::a('New Booking Request', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('New Booking Request', ['bookingavail'], ['class' => 'btn btn-success']) ?>
     </div>
     <div class="row">  
         <div class="col-sm-12">  
@@ -90,7 +90,7 @@ $statuses = MapConstants::getBookingStatus();
                         </thead>
                         <tbody>
                                 <?php $c = 1; ?>           
-                                <?php foreach($future_bookings as $l) : ?>
+                                <?php foreach($past_bookings as $l) : ?>
                                 <tr>
                                     <td><?php echo $c++; ?> </td>
                                     <td><?php echo $l->Reason; ?></td>

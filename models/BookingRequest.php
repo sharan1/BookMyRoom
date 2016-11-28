@@ -37,7 +37,7 @@ class BookingRequest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['UserID','StartTime','EndTime'], 'required'],
+            [['UserID','StartTime','EndTime','Reason'], 'required'],
             [['UserID', 'Booking_Status'], 'integer'],
             [['RequestedOn', 'StartTime', 'EndTime', 'Last_Updated', 'workspace_details'], 'safe'],
             [['Reason', 'Additional_Info'], 'string'],
@@ -56,9 +56,9 @@ class BookingRequest extends \yii\db\ActiveRecord
             'RequestedOn' => 'Requested On',
             'StartTime' => 'Start Time',
             'EndTime' => 'End Time',
-            'Reason' => 'Event For?',
+            'Reason' => 'Purpose',
             'Booking_Status' => 'Booking  Status',
-            'Additional_Info' => 'Additional  Info',
+            'Additional_Info' => 'Additional Requirements(If any)',
             'Last_Updated' => 'Last  Updated',
         ];
     }

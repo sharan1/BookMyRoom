@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'Name',
             [
-                'attribute' => 'AreaID',
+                'attribute' => 'AreaName',
                 'format' => 'raw',
                 'value' => function($model) {
                     return $model->area->Name;

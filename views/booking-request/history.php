@@ -24,6 +24,7 @@ $statuses = MapConstants::getBookingStatus();
                             <tr>
                                 <th>S. No </th>
                                 <th>Event</th>
+                                <th>User</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
                                 <th>Space</th>
@@ -37,6 +38,7 @@ $statuses = MapConstants::getBookingStatus();
                                 <tr>
                                     <td><?= $c++; ?> </td>
                                     <td><?= $l->Reason; ?></td>
+                                    <td><?= $l->user->fullName; ?></td>
                                     <td><?= $l->StartTime; ?></td>
                                     <td><?= $l->EndTime; ?></td>
                                     <td><?= implode(', ', $mapping[$l->RequestID]); ?></td>

@@ -16,5 +16,14 @@ class MapConstants extends Model
             2 => 'Confirmed'
         ];
     }
+
+    public static function getAreaType()
+    {
+        return [
+            1 => 'Academic',
+            2 => 'Miscellaneous Activities',
+            3 => 'Outsourced'
+        ];
+    }
 }
 ?>

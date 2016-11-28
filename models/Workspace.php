@@ -55,6 +55,7 @@ class Workspace extends \yii\db\ActiveRecord
 
     public function getArea()
     {
-        return Area::find()->where(['AreaID' => $this->AreaID])->one();
+        return $this->hasOne(Area::className(), ['AreaID' => 'AreaID']);
+        //return Area::find()->where(['AreaID' => $this->AreaID])->one();
     }
 }

@@ -40,7 +40,7 @@ use app\models\Workspace;
 
     <?= $form->field($model, 'Additional_Info')->textarea(['rows' => 3]) ?>
 
-    <div class="form-group">
+    <div class="form-group" align="center">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

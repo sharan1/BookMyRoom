@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\RequestBookingPairing;
 use app\models\RequestBookingPairingSearch;
-use yii\web\Controller;
+use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,20 +14,6 @@ use yii\filters\VerbFilter;
  */
 class RequestBookingPairingController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all RequestBookingPairing models.

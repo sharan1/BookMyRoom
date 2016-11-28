@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Workspace;
 use app\models\WorkspaceSearch;
-use yii\web\Controller;
+use app\components\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -15,26 +15,15 @@ use yii\filters\VerbFilter;
 class WorkspaceController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Lists all Workspace models.
      * @return mixed
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $searchModel = new WorkspaceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,6 +40,10 @@ class WorkspaceController extends Controller
      */
     public function actionView($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -63,6 +56,10 @@ class WorkspaceController extends Controller
      */
     public function actionCreate()
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = new Workspace();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -82,6 +79,10 @@ class WorkspaceController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -101,6 +102,10 @@ class WorkspaceController extends Controller
      */
     public function actionDelete($id)
     {
+        if(Yii::$app->user->identity->PrivilegeID != 1)
+        {
+            $this->goHome();
+        }
         $model = $this->findModel($id);
         $model->IsActive = 0;
         $model->save();

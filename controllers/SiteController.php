@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use app\components\Controller;
+use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -80,13 +80,13 @@ class SiteController extends Controller
             $userDetails = Users::findIdentity(Yii::$app->user->id);
             if (isset($userDetails))
             {
-                if($userDetails->PrivilegeID == 1 || $userDetails->PrivilegeID == 2)
+                if($userDetails->PrivilegeID == 1)
                 {
                     $this->redirect(['/users/home'])->send();
                 }
                 else
                 {
-                    $this->redirect(['/users'])->send();
+                    $this->redirect(['/booking-request/bookingavail'])->send();
                 }
             } 
             else 
@@ -109,13 +109,13 @@ class SiteController extends Controller
                         $userDetails = Users::findIdentity(Yii::$app->user->id);
                         if (isset($userDetails)) 
                         {
-                            if($userDetails->PrivilegeID == 1 || $userDetails->PrivilegeID == 2)
+                            if($userDetails->PrivilegeID == 1)
                             {
                                 $this->redirect(['/users/home'])->send();
                             }
                             else
                             {
-                                $this->redirect(['/users'])->send();
+                                $this->redirect(['/booking-request/bookingavail'])->send();
                             }
                         } 
                         else 
@@ -170,13 +170,13 @@ class SiteController extends Controller
             }
             $user->Password = md5($resetpasswordmodel->changepassword);
             $user->save();
-            if($user->PrivilegeID == 1 || $user->PrivilegeID == 2)
+            if($user->PrivilegeID == 1)
             {
                 $this->redirect(['/users/home'])->send();
             }
-            else
+            else if($user->PrivilegeID == 2)
             {
-                $this->redirect(['/users'])->send();
+                $this->redirect(['/booking-request/bookingavail'])->send();
             }
         }
 
@@ -190,16 +190,9 @@ class SiteController extends Controller
         $model = new Users();
         if($model->load(Yii::$app->request->post())) 
         {
-            $model->PrivilegeID = 3;
+            $model->PrivilegeID = 2;
             $model->save();
-            if($model->PrivilegeID == 1 || $model->PrivilegeID == 2)
-            {
-                $this->redirect(['/users/home'])->send();
-            }
-            else
-            {
-                $this->redirect(['/users'])->send();
-            }
+            $this->redirect(['/booking-request/bookingavail'])->send();
         } 
         else 
         {

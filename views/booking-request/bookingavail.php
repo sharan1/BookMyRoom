@@ -25,12 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-sm-12">
     				<div class="form-group col-sm-3">
                        <?= '<label>Area</label>'; ?>
-    	               <?= Html::dropDownList('AreaID', null, ArrayHelper::map(Area::find()->where(['IsActive' => 1])->all(), 'AreaID', 'Name'), ['prompt' => "Select Area", 'class' => 'select2', 'id' => 'area-avail']) ?>
+    	               <?= Html::dropDownList('AreaID', $area_id, ArrayHelper::map(Area::find()->where(['IsActive' => 1])->all(), 'AreaID', 'Name'), ['prompt' => "Select Area", 'class' => 'select2', 'id' => 'area-avail']) ?>
                     </div>
 
                     <div class="form-group col-sm-3">
                         <?= '<label>Workspace</label>'; ?>               
-                        <?= Html::dropDownList('WorkspaceID', null, [], ['prompt' => "Select Workspace", 'class' => 'select2', 'id' => 'workspace-avail']) ?>
+                        <?= Html::dropDownList('WorkspaceID', $workspace_id, $workspace_dropdown, ['prompt' => "Select Workspace", 'class' => 'select2', 'id' => 'workspace-avail']) ?>
                     </div>
 
                     <div class="form-group col-sm-3">
@@ -64,15 +64,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class = "row">
                     <div class="col-sm-12">
-                        <div class="form-group col-sm-6">
-                           <?= '<label>Event For?</label><br>'; ?>
-                           <?= Html::textInput('Reason', $reason); ?>
+                        <div class="form-group col-md-6" style="margin-left: 1.4%">
+                           <?= '<label>Purpose</label><br>'; ?>
+                           <?= Html::textInput('Reason', $reason, ['placeholder' => 'Enter your purpose', 'id' => 'reason-avail', 'style'=>'width: 98%']); ?>
+                        </div>
+
+                        <div class="form-group col-sm-5">
+                           <?= '<label>Additional Requirements(If any)</label><br>'; ?>
+                           <?= Html::textInput('Additional_Info', $additional_info, ['placeholder' => 'Additional Requirements', 'id' => 'info-avail', 'style'=>'width: 98%']); ?>
                         </div>
                     </div>
                 </div>
                 <div class = "row">
                     <div align="center">
-                        <?= Html::submitButton('Search', ['class' => 'btn btn-primary' , 'id' => 'submit']); ?>
+                        <?= Html::submitButton('Search', ['class' => 'btn btn-primary' , 'id' => 'submit-avail', 'style' => 'margin-left:20px']); ?>
                     </div>  
                 </div>
                 <?php ActiveForm::end(); ?>
@@ -119,13 +124,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </table>
                 <?= Html::a('Reserve', '', ['id' => 'book-room','class' => 'btn btn-sm btn-success', 'style' => 'margin-left:50%']);?>       
             </div>
+            <div align="right">
+                <?= Html::a('Download','', ['class' => 'btn btn-success btn-sm export-booking-data']); ?>
+            </div >
         </section>
     </div>
 </div>
 <?php else : ?> 
     <center><b><i>There is no record in the selected criteria.</i></b></center>
-<?php endif ; ?>
-
-<div align="right">
-    <?= Html::a('Download','', ['class' => 'btn btn-success btn-sm export-booking-data']); ?>
-</div > 
+<?php endif ; ?> 
