@@ -132,6 +132,12 @@ class SiteController extends Controller
                         ]);
                     }
                 }
+                else
+                {
+                    return $this->render('login', [
+                                'model' => $model,
+                        ]);
+                }
             }
             else
             {

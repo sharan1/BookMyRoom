@@ -72,7 +72,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Book My Room <?= date('Y') ?></p>
+        <p style="margin-left:180px">&copy; BookMyRoom <?= date('Y') ?></p>
     </div>
 
 </footer>

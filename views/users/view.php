@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = $model->UserID;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="pull-right" style="padding-bottom:20px">
-        <?= Html::a('Update', ['update', 'id' => $model->UserID], ['class' => 'btn btn-primary', 'style' => 'margin-right:4px']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->UserID], [
             'class' => 'btn btn-danger',
             'data' => [

@@ -222,22 +222,39 @@ class BookingRequestController extends Controller
             $additional_info = $_POST['Additional_Info'];
 
             $query = new Query;
-            $query->select('w.*, a.Name as AreaName')->distinct()
+            $query->select('w.WorkspaceID')->distinct()
                   ->from('Workspace w')
                   ->leftJoin('RequestBookingPairing rbp', 'w.WorkspaceID = rbp.WorkspaceID')
                   ->leftJoin('BookingRequest br', 'br.RequestID = rbp.RequestID')
-                  ->innerJoin('Area a', 'a.AreaID = w.AreaID')
-                  ->where("(br.StartTime > '".$start_time."' AND br.StartTime > '".$end_time."') OR (br.EndTime < '".$start_time."' AND br.EndTime < '".$end_time."')")
-                  ->andWhere(['w.IsActive' => 1, 'a.IsActive' => 1]);
+                  ->where("(br.StartTime < '".$start_time."' OR br.StartTime < '".$end_time."') AND (br.EndTime > '".$start_time."' AND br.EndTime > '".$end_time."')")
+                  ->andWhere(['w.IsActive' => 1]);
+            $temp = $query->all();
+
+            $w_ids = array_column($temp, 'WorkspaceID');
+
+            $q = new Query;
+            $q->select('w.*, a.Name as AreaName')
+              ->from('Workspace w')
+              ->innerJoin('Area a', 'a.AreaID = w.AreaID');
+            if(!empty($w_ids))
+            {
+                $q->where("w.WorkspaceID NOT IN (".implode($w_ids, ',').")");
+            }
+            else
+            {
+                $q->where("1");
+            }
+
+            
             if($_POST['AreaID'] != '')
             {
-                $query->andWhere(['w.AreaID' => $_POST['AreaID']]);
+                $q->andWhere(['w.AreaID' => $_POST['AreaID']]);
             }
             if($_POST['WorkspaceID'] != '')
             {
-                $query->andWhere(['w.WorkspaceID' => $_POST['WorkspaceID']]);
+                $q->andWhere(['w.WorkspaceID' => $_POST['WorkspaceID']]);
             }
-            $result = $query->all();
+            $result = $q->all();
             // echo "<pre>";
             // var_dump($result);
             // die;
