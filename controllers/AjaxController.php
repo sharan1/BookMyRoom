@@ -44,22 +44,18 @@ class AjaxController extends Controller
 
     public function actionFillworkspace()
     {
+        $result = '<option value>Select Workspace</option>';
         if($_POST["areaid"] != "")
         {
             $query = new Query;
             $query->select('WorkspaceID, Name')->from('Workspace')->where(['AreaID' => $_POST['areaid']]);
             $data = $query->all();
-            $result = '<option value>Select Workspace</option>';
             foreach ($data as $key => $value) 
             {
                 $result .= '<option value="'.$value['WorkspaceID'].'">'.$value['Name'].'</option>';
             }
-            echo $result;
         }
-        else
-        {
-            echo "Please enter AreaID";
-        }
+        echo $result;
         return;
     }
 

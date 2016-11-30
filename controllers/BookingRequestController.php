@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 use app\models\Email;
+use app\models\Workspace;
 
 /**
  * BookingRequestController implements the CRUD actions for BookingRequest model.
@@ -221,43 +222,7 @@ class BookingRequestController extends Controller
             $workspace_id = $_POST['WorkspaceID'];
             $additional_info = $_POST['Additional_Info'];
 
-            $query = new Query;
-            $query->select('w.WorkspaceID')->distinct()
-                  ->from('Workspace w')
-                  ->leftJoin('RequestBookingPairing rbp', 'w.WorkspaceID = rbp.WorkspaceID')
-                  ->leftJoin('BookingRequest br', 'br.RequestID = rbp.RequestID')
-                  ->where("(br.StartTime < '".$start_time."' OR br.StartTime < '".$end_time."') AND (br.EndTime > '".$start_time."' AND br.EndTime > '".$end_time."')")
-                  ->andWhere(['w.IsActive' => 1]);
-            $temp = $query->all();
-
-            $w_ids = array_column($temp, 'WorkspaceID');
-
-            $q = new Query;
-            $q->select('w.*, a.Name as AreaName')
-              ->from('Workspace w')
-              ->innerJoin('Area a', 'a.AreaID = w.AreaID');
-            if(!empty($w_ids))
-            {
-                $q->where("w.WorkspaceID NOT IN (".implode($w_ids, ',').")");
-            }
-            else
-            {
-                $q->where("1");
-            }
-
-            
-            if($_POST['AreaID'] != '')
-            {
-                $q->andWhere(['w.AreaID' => $_POST['AreaID']]);
-            }
-            if($_POST['WorkspaceID'] != '')
-            {
-                $q->andWhere(['w.WorkspaceID' => $_POST['WorkspaceID']]);
-            }
-            $result = $q->all();
-            // echo "<pre>";
-            // var_dump($result);
-            // die;
+            $result = Workspace::getAvailabilityResults($start_time, $end_time, $area_id, $workspace_id);
         }
 
         return $this->render('bookingavail', [
