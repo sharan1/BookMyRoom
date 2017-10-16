@@ -1,7 +1,7 @@
 # BookMyRoom
 Software System Design &amp; Implementations Project, primarily based on PHP, Javascript &amp; MySQL
 
-![Alt text](Image.png?raw=true "Website Homepage")
+![Alt text](BookMyRoom.png?raw=true "Website Homepage")
 
 ## Description:
 
